@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>main.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">turtle</span>
+<span class="s0">import </span><span class="s1">winsound</span>
+
+<span class="s1">wn = turtle.Screen()  </span><span class="s2"># creat a window</span>
+<span class="s1">wn.title(</span><span class="s3">'Pong'</span><span class="s1">)</span>
+<span class="s1">wn.bgcolor(</span><span class="s3">'white'</span><span class="s1">)</span>
+<span class="s1">wn.setup(width=</span><span class="s4">800</span><span class="s0">, </span><span class="s1">height=</span><span class="s4">600</span><span class="s1">)</span>
+<span class="s1">wn.tracer(</span><span class="s4">0</span><span class="s1">)  </span><span class="s2"># make our prog faster</span>
+
+
+<span class="s2"># score</span>
+<span class="s1">score_A = </span><span class="s4">0</span>
+<span class="s1">score_B = </span><span class="s4">0</span>
+
+<span class="s2"># paddle A</span>
+<span class="s1">paddle_A = turtle.Turtle()</span>
+<span class="s1">paddle_A.speed(</span><span class="s4">0</span><span class="s1">)</span>
+<span class="s1">paddle_A.shape(</span><span class="s3">'square'</span><span class="s1">)</span>
+<span class="s1">paddle_A.shapesize(stretch_wid=</span><span class="s4">5</span><span class="s0">, </span><span class="s1">stretch_len=</span><span class="s4">1</span><span class="s1">)</span>
+<span class="s1">paddle_A.color(</span><span class="s3">'black'</span><span class="s1">)</span>
+<span class="s1">paddle_A.penup()</span>
+<span class="s1">paddle_A.goto(-</span><span class="s4">350</span><span class="s0">, </span><span class="s4">0</span><span class="s1">)  </span><span class="s2"># pos</span>
+
+
+<span class="s2"># paddle-B</span>
+<span class="s1">paddle_B = turtle.Turtle()</span>
+<span class="s1">paddle_B.speed(</span><span class="s4">0</span><span class="s1">)</span>
+<span class="s1">paddle_B.shape(</span><span class="s3">'square'</span><span class="s1">)</span>
+<span class="s1">paddle_B.shapesize(stretch_wid=</span><span class="s4">5</span><span class="s0">, </span><span class="s1">stretch_len=</span><span class="s4">1</span><span class="s1">)</span>
+<span class="s1">paddle_B.color(</span><span class="s3">'black'</span><span class="s1">)</span>
+<span class="s1">paddle_B.penup()</span>
+<span class="s1">paddle_B.goto(</span><span class="s4">350</span><span class="s0">, </span><span class="s4">0</span><span class="s1">)</span>
+
+
+<span class="s2"># ball</span>
+<span class="s1">ball = turtle.Turtle()</span>
+<span class="s1">ball.speed(</span><span class="s4">0</span><span class="s1">)</span>
+<span class="s1">ball.shape(</span><span class="s3">'circle'</span><span class="s1">)</span>
+<span class="s1">ball.color(</span><span class="s3">'black'</span><span class="s1">)</span>
+<span class="s1">ball.penup()</span>
+<span class="s1">ball.goto(</span><span class="s4">0</span><span class="s0">, </span><span class="s4">0</span><span class="s1">)</span>
+<span class="s1">ball.dx = </span><span class="s4">0.18</span>
+<span class="s1">ball.dy = </span><span class="s4">0.18</span>
+
+
+<span class="s2"># pen</span>
+<span class="s1">pen = turtle.Turtle()</span>
+<span class="s1">pen.speed(</span><span class="s4">0</span><span class="s1">)</span>
+<span class="s1">pen.color(</span><span class="s3">'black'</span><span class="s1">)</span>
+<span class="s1">pen.penup()</span>
+<span class="s1">pen.hideturtle()</span>
+<span class="s1">pen.goto(</span><span class="s4">0</span><span class="s0">, </span><span class="s4">270</span><span class="s1">)</span>
+<span class="s1">pen.write(</span><span class="s3">'Player A: {}   Player B: {}'</span><span class="s1">.format(score_A</span><span class="s0">, </span><span class="s1">score_B)</span><span class="s0">, </span><span class="s1">align=</span><span class="s3">'center'</span><span class="s0">, </span><span class="s1">font=(</span><span class="s3">'Times New Roman'</span><span class="s0">, </span><span class="s4">20</span><span class="s0">, </span><span class="s3">'italic'</span><span class="s1">))</span>
+
+<span class="s2"># function</span>
+<span class="s0">def </span><span class="s1">paddle_A_up():</span>
+    <span class="s1">y = paddle_A.ycor()</span>
+    <span class="s1">y += </span><span class="s4">20</span>
+    <span class="s1">paddle_A.sety(y)</span>
+
+<span class="s0">def </span><span class="s1">paddle_A_down():</span>
+    <span class="s1">y = paddle_A.ycor()</span>
+    <span class="s1">y -= </span><span class="s4">20</span>
+    <span class="s1">paddle_A.sety(y)</span>
+
+
+<span class="s0">def </span><span class="s1">paddle_B_up():</span>
+    <span class="s1">y = paddle_B.ycor()</span>
+    <span class="s1">y += </span><span class="s4">20</span>
+    <span class="s1">paddle_B.sety(y)</span>
+
+
+<span class="s0">def </span><span class="s1">paddle_B_down():</span>
+    <span class="s1">y = paddle_B.ycor()</span>
+    <span class="s1">y -= </span><span class="s4">20</span>
+    <span class="s1">paddle_B.sety(y)</span>
+
+<span class="s2"># keybord binding</span>
+<span class="s1">wn.listen()</span>
+<span class="s1">wn.onkeypress(paddle_A_up</span><span class="s0">, </span><span class="s3">'z'</span><span class="s1">)</span>
+<span class="s1">wn.onkeypress(paddle_A_down</span><span class="s0">, </span><span class="s3">'s'</span><span class="s1">)</span>
+<span class="s1">wn.onkeypress(paddle_B_up</span><span class="s0">, </span><span class="s3">'Up'</span><span class="s1">)</span>
+<span class="s1">wn.onkeypress(paddle_B_down</span><span class="s0">, </span><span class="s3">'Down'</span><span class="s1">)</span>
+
+
+<span class="s2"># main game loop</span>
+<span class="s0">while True</span><span class="s1">:</span>
+    <span class="s1">wn.update()</span>
+
+    <span class="s2"># move the ball</span>
+    <span class="s1">ball.setx(ball.xcor() + ball.dx)</span>
+    <span class="s1">ball.sety(ball.ycor() + ball.dy)</span>
+
+    <span class="s2"># border checking</span>
+    <span class="s0">if </span><span class="s1">ball.ycor() &gt; </span><span class="s4">290</span><span class="s1">:</span>
+        <span class="s1">ball.sety(</span><span class="s4">290</span><span class="s1">)</span>
+        <span class="s1">ball.dy *= -</span><span class="s4">1</span>
+        <span class="s1">winsound.PlaySound(</span><span class="s3">'*.wav'</span><span class="s0">, </span><span class="s1">winsound.SND_ASYNC)</span>
+
+    <span class="s0">if </span><span class="s1">ball.ycor() &lt; -</span><span class="s4">290</span><span class="s1">:</span>
+        <span class="s1">ball.sety(-</span><span class="s4">290</span><span class="s1">)</span>
+        <span class="s1">ball.dy *= -</span><span class="s4">1</span>
+
+    <span class="s0">if </span><span class="s1">ball.xcor() &gt; </span><span class="s4">390</span><span class="s1">:</span>
+        <span class="s1">ball.goto(</span><span class="s4">0</span><span class="s0">, </span><span class="s4">0</span><span class="s1">)</span>
+        <span class="s1">ball.dx *= -</span><span class="s4">1</span>
+        <span class="s1">score_A += </span><span class="s4">1</span>
+        <span class="s1">pen.clear()</span>
+        <span class="s1">pen.write(</span><span class="s3">'Player A: {}   Player B: {}'</span><span class="s1">.format(score_A</span><span class="s0">, </span><span class="s1">score_B)</span><span class="s0">, </span><span class="s1">align=</span><span class="s3">'center'</span><span class="s0">, </span><span class="s1">font=(</span><span class="s3">'Times New Roman'</span><span class="s0">, </span><span class="s4">20</span><span class="s0">, </span><span class="s3">'italic'</span><span class="s1">))</span>
+
+    <span class="s0">if </span><span class="s1">ball.xcor() &lt; -</span><span class="s4">390</span><span class="s1">:</span>
+        <span class="s1">ball.goto(</span><span class="s4">0</span><span class="s0">, </span><span class="s4">0</span><span class="s1">)</span>
+        <span class="s1">ball.dx *= -</span><span class="s4">1</span>
+        <span class="s1">score_B += </span><span class="s4">1</span>
+        <span class="s1">pen.clear()</span>
+        <span class="s1">pen.write(</span><span class="s3">'Player A: {}   Player B: {}'</span><span class="s1">.format(score_A</span><span class="s0">, </span><span class="s1">score_B)</span><span class="s0">, </span><span class="s1">align=</span><span class="s3">'center'</span><span class="s0">, </span><span class="s1">font=(</span><span class="s3">'Times New Roman'</span><span class="s0">, </span><span class="s4">20</span><span class="s0">, </span><span class="s3">'italic'</span><span class="s1">))</span>
+
+    <span class="s2"># paddle and ball collisions</span>
+    <span class="s0">if </span><span class="s1">ball.xcor() &gt; </span><span class="s4">340 </span><span class="s0">and </span><span class="s1">ball.xcor() &lt; </span><span class="s4">350 </span><span class="s0">and </span><span class="s1">(ball.ycor() &lt; paddle_B.ycor() + </span><span class="s4">40 </span><span class="s0">and </span><span class="s1">ball.ycor() &gt; paddle_B.ycor() - </span><span class="s4">40</span><span class="s1">):</span>
+        <span class="s1">ball.setx(</span><span class="s4">340</span><span class="s1">)</span>
+        <span class="s1">ball.dx *= -</span><span class="s4">1</span>
+
+    <span class="s0">if </span><span class="s1">ball.xcor() &lt; -</span><span class="s4">340 </span><span class="s0">and </span><span class="s1">ball.xcor() &gt; -</span><span class="s4">350 </span><span class="s0">and </span><span class="s1">(ball.ycor() &lt; paddle_A.ycor() + </span><span class="s4">40 </span><span class="s0">and </span><span class="s1">ball.ycor() &gt; paddle_A.ycor() - </span><span class="s4">40</span><span class="s1">):</span>
+        <span class="s1">ball.setx(-</span><span class="s4">340</span><span class="s1">)</span>
+        <span class="s1">ball.dx *= -</span><span class="s4">1</span>
+</pre>
+</body>
+</html>
